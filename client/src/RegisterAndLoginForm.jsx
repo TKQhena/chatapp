@@ -4,6 +4,7 @@ import {UserContext} from "./UserContext.jsx";
 
 export default function RegisterAndLoginForm() {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoginOrRegister, setIsLoginOrRegister] = useState('login');
   const {setUsername:setLoggedInUsername, setId} = useContext(UserContext);

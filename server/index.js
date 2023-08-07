@@ -3,12 +3,13 @@ const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const app = express()
+require('dotenv').config()
 
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:3000'
+  origin: process.env.client_URL,
 }))
 
 mongoose.connect('mongodb://localhost:27017/chatapp')
@@ -19,7 +20,6 @@ mongoose.connection.on('connected', () => {
 
 app.use('/user', require('./routes/userendpoint'))
 
-app.use('/message', require('./routes/messageEndpoint'))
 
 app.listen(4040, () => {
   console.log('Server is running on port 4040')
