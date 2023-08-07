@@ -18,7 +18,7 @@ mongoose.connection.on('connected', () => {
   console.log('Mongoose is connected')
 })
 
-app.use('/user', require('./routes/userendpoint'))
+app.use('/api', require('./routes/userendpoint'))
 
 
 app.listen(4040, () => {

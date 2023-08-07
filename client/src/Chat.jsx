@@ -19,7 +19,7 @@ export default function Chat() {
     connectToWs();
   }, [selectedUserId]);
   function connectToWs() {
-    const ws = new WebSocket('ws://localhost:4040');
+    const ws = new WebSocket('ws://localhost:5420');
     setWs(ws);
     ws.addEventListener('message', handleMessage);
     ws.addEventListener('close', () => {
@@ -62,7 +62,7 @@ export default function Chat() {
       file,
     }));
     if (file) {
-      axios.get('/messages/'+selectedUserId).then(res => {
+      axios.get('/api/messages/'+selectedUserId).then(res => {
         setMessages(res.data);
       });
     } else {
@@ -94,7 +94,7 @@ export default function Chat() {
   }, [messages]);
 
   useEffect(() => {
-    axios.get('/people').then(res => {
+    axios.get('/api/people').then(res => {
       const offlinePeopleArr = res.data
         .filter(p => p._id !== id)
         .filter(p => !Object.keys(onlinePeople).includes(p._id));
@@ -108,7 +108,7 @@ export default function Chat() {
 
   useEffect(() => {
     if (selectedUserId) {
-      axios.get('/messages/'+selectedUserId).then(res => {
+      axios.get('/api/messages/'+selectedUserId).then(res => {
         setMessages(res.data);
       });
     }
