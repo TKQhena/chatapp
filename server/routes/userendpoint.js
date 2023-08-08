@@ -8,15 +8,20 @@ const Message = require('../models/messageModel')
 const ws = require('ws')
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
+const cors = require('cors')
+
+router.use(express.json())
 
 router.post('/register', async (req, res) => {
     const { username, password } = req.body
     try {
         const hashedPassword = bcrypt.hashSync(password, process.env.bcryptSalt );
-        const user = await User.create({ username, password: hashedPassword })
-        const accessToken = createToken(user)
-        res.cookie('accessToken', accessToken, {sameSite: 'none', secure: true}).status(201).json({
+        const user = new User({ username, password: hashedPassword })
+        user.save().then(() => {
+          const accessToken = createToken(user)
+          res.cookie('accessToken', accessToken, {sameSite: 'none', secure: true}).status(201).json({
             id: user._id,
+          })
         })
     }catch(err) {
         return res.status(400).send(err)
@@ -29,15 +34,16 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne({ username })
         if(!user) {
             return res.status(400).send('User not found')
-        }
-        const isPasswordValid = bcrypt.compareSync(password, user.password)
-        if(!isPasswordValid) {
+        }else{
+          const isPasswordValid = bcrypt.compareSync(password, user.password)
+          if(!isPasswordValid) {
             return res.status(400).send('Invalid password')
-        }
-        const accessToken = createToken(user)
-        res.cookie('accessToken', accessToken, {sameSite: 'none', secure: true}).status(200).json({
+          }
+          const accessToken = createToken(user)
+          res.cookie('accessToken', accessToken, {sameSite: 'none', secure: true}).status(200).json({
             id: user._id,
-        })
+          })
+        } 
     }catch(err) {
         return res.status(400).send(err)
     }
