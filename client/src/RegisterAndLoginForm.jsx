@@ -12,32 +12,42 @@ export default function RegisterAndLoginForm() {
   async function handleSubmit(ev) {
     ev.preventDefault();
     if (isLoginOrRegister === 'register') {
-      await axios.post('/api/register', {username, email, password})
+      axios.post('/user/register', {username, email, password})
       .then(res => {
         setData(res.data);
       }).catch(err => {
         console.log(err);
       })
-
     }
     else if(isLoginOrRegister){
-      await axios.post('/api/login', {username, password})
+      axios.post('/user/login', {username, password})
       .then(res => {
         setData(res.data);
       })
+      console.log(data)
     }
-    setLoggedInUsername(username);
-    setId(data.id);
+    if (data) {
+      setLoggedInUsername(data.username);
+      setId(data.id);
+    }else{
+      alert('Something went wrong');
+    }
   }
   return (
     <div className="bg-gray-50 h-screen flex items-center">
       <form onSubmit={handleSubmit} className="w-64 mx-auto mb-12">
         <ul className="flex gap-4 block auto mb-2">
         <li>
-          <button onClick={() => setIsLoginOrRegister('login')} >Login</button>
+          <button onClick={(e) => {
+            e.preventDefault();
+            setIsLoginOrRegister('login')
+            }}>Login</button>
         </li>
         <li>
-          <button onClick={() => setIsLoginOrRegister('register')}>Register</button>
+          <button onClick={(e) =>{
+            e.preventDefault();
+            setIsLoginOrRegister('register')
+          } }>Register</button>
         </li>
       </ul>
         {isLoginOrRegister === 'login' && (

@@ -20,7 +20,7 @@ const validate = (req,res,next) => {
             return next();
         }
     }catch (err) {
-        return res.status(401).send("Unauthorized");
+        return res.status(200).send("Unauthorized");
     }
 
 }
@@ -31,11 +31,11 @@ async function getUserData(req) {
         if(!accessToken) {
             reject('no token');
         }else{
-            verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+            verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, userData) => {
                 if(err) {
                     reject(err);
                 }else{
-                    resolve(user);
+                    resolve(userData);
                 }
             })
         }

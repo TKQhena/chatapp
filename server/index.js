@@ -5,10 +5,16 @@ const cors = require('cors')
 const app = express()
 require('dotenv').config()
 
+const client_URL = process.env.CLIENT_URL
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors())
-const Port = process.env.PORT 
+app.use(cors(
+  {
+    origin: client_URL,
+    credentials: true,
+  }
+))
+const Port = process.env.PORT
 
 mongoose.connect('mongodb://localhost:27017/chatapp')
 
@@ -20,7 +26,9 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.use('/api', require('./routes/userendpoint'))
+app.use('/user', require('./routes/userendpoint'))
+
+/* app.use('/ws', require('./routes/websocket')) */
 
 
 app.listen(Port, () => {
