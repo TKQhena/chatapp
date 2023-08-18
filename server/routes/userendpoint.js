@@ -20,7 +20,7 @@ router.post('/register', async (req, res) => {
     newUser.save()
       .then((user) => {
         newToken = createToken(user)
-        res.cookie('accessToken', newToken)
+        res.cookie('accessToken', newToken,{sameSite: 'none', secure: true})
         res.json("User has been created successfully")
       })
       .catch((err) => {
@@ -40,7 +40,7 @@ router.post('/login', async (req, res) => {
       res.status(400).json("Incorrect password")
     }else{
       newToken = createToken(user)
-      res.cookie('accessToken', newToken)
+      res.cookie('accessToken', newToken,{sameSite: 'none', secure: true})
       res.json(user)
     }
   }

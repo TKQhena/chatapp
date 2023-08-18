@@ -24,6 +24,6 @@ app.use('/api', require('./routes/userendpoint'))
 
 
 app.listen(Port, () => {
-  console.log(`Server is running on http://localhost:{Port}`)
+  console.log(`Server is running on http://localhost:${Port}`)
 })
 
