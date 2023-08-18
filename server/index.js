@@ -8,6 +8,7 @@ require('dotenv').config()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors())
+const Port = process.env.PORT 
 
 mongoose.connect('mongodb://localhost:27017/chatapp')
 
@@ -22,7 +23,7 @@ app.get('/', (req, res) => {
 app.use('/api', require('./routes/userendpoint'))
 
 
-app.listen(4040, () => {
-  console.log('Server is running on http://localhost:4040')
+app.listen(Port, () => {
+  console.log(`Server is running on http://localhost:{Port}`)
 })
 

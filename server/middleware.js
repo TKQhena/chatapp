@@ -11,12 +11,11 @@ const validate = (req,res,next) => {
     const accessToken = req.cookies["accessToken"];
 
     if(!accessToken) {
-        return res.status(401).send("Unauthorized");
+        return res.status(401).send("Was not tested");
     }
     try {
         const verified = verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-
-        if(varified){
+        if(verified){
             req.authanticated = true;
             return next();
         }

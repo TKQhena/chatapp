@@ -7,17 +7,36 @@ export default function RegisterAndLoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoginOrRegister, setIsLoginOrRegister] = useState('login');
+  const [data, setData] = useState(null);
   const {setUsername:setLoggedInUsername, setId} = useContext(UserContext);
   async function handleSubmit(ev) {
     ev.preventDefault();
-    const url = isLoginOrRegister === 'register' ? 'register' : 'login';
-    const {data} = await axios.post('/api/'+url, {username,password});
+    if (isLoginOrRegister === 'register') {
+      await axios.post('/api/register', {username, email, password})
+      .then(res => {
+        setData(res.data);
+      }).catch(err => {
+        console.log(err);
+      })
+
+    }
+    else if(isLoginOrRegister){
+      await axios.post('/api/login', {username, password})
+      .then(res => {
+        setData(res.data);
+      })
+    }
     setLoggedInUsername(username);
     setId(data.id);
   }
   return (
     <div className="bg-blue-50 h-screen flex items-center">
       <form className="w-64 mx-auto mb-12" onSubmit={handleSubmit}>
+        <input value = {email}
+              onChange={ev => setEmail(ev.target.value)}
+              type="email" 
+              placeholder="email"
+              className="block w-full rounded-sm p-2 mb-2 border" />
         <input value={username}
                onChange={ev => setUsername(ev.target.value)}
                type="text" placeholder="username"
